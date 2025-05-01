@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" href="./swagger-ui.css" />
+</head>
+<body>
+<div id="swagger-ui"></div>
+<script src="./swagger-ui-bundle.js"></script>
+<script>
+    window.onload = function () {
+        SwaggerUIBundle({
+            url: "/openapi/courses.json",
+            dom_id: "#swagger-ui"
+        });
+    };
+</script>
+</body>
+</html>

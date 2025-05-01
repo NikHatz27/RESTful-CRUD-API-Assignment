@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Courses API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000/api
+    description: Local Development Server
+
+tags:
+  - name: Courses
+    description: Course management operations
+
+paths:
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: Get all courses
+      operationId: getCourses
+      responses:
+        '200':
+          description: List of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+
+    post:
+      tags:
+        - Courses
+      summary: Create a new course
+      operationId: createCourse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '201':
+          description: Course created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+
+  /courses/{id}:
+    get:
+      tags:
+        - Courses
+      summary: Get course by ID
+      operationId: getCourseById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Course details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          description: Course not found
+
+    put:
+      tags:
+        - Courses
+      summary: Update a course
+      operationId: updateCourse
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '200':
+          description: Course updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          description: Course not found
+
+    delete:
+      tags:
+        - Courses
+      summary: Delete a course
+      operationId: deleteCourse
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Course deleted
+        '404':
+          description: Course not found
+
+components:
+  schemas:
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [Published, Pending]
+          default: Pending
+        is_premium:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - title
+        - status
+        - is_premium
+        - created_at
+        - updated_at
+
+    CourseInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [Published, Pending]
+          default: Pending
+        is_premium:
+          type: boolean
+          default: false
+      required:
+        - title
